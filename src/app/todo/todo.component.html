@@ -1,0 +1,32 @@
+<div>
+  <div *ngIf="getRestService().connected == true; else notConnected">
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Titel</th>
+        <th scope="col">Beschreibung</th>
+        <th scope="col">Frist</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let entry of getRestService().getEntries()">
+        <th>{{entry.title}}</th>
+        <td>{{entry.description}}</td>
+        <td>{{entry.deadline}}</td>
+        <td><i class="fas fa-pencil-alt"></i></td>
+        <td><i class="fas fa-trash-alt"></i></td>
+        <td><i class="fas fa-qrcode"></i></td>
+      </tr>
+      </tbody>
+    </table>
+    <button type="button" class="btn btn-success customButton">Eintrag hinzufügen</button>
+  </div>
+  <ng-template #notConnected>
+    <div class="alert alert-danger" role="alert">
+      Du hast dich noch nicht mit einem Handy verbunden. Klicke <a routerLink="/connect" class="alert-link">hier</a> um dein Handy zu verbinden.
+    </div>
+  </ng-template>
+</div>

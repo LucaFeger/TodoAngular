@@ -13,16 +13,16 @@
       </thead>
       <tbody>
       <tr *ngFor="let entry of getRestService().getEntries()">
-        <th>{{entry.title}}</th>
+        <th #title>{{entry.title}}</th>
         <td>{{entry.description}}</td>
         <td>{{entry.deadline}}</td>
-        <td><i class="fas fa-pencil-alt"></i></td>
-        <td><i class="fas fa-trash-alt"></i></td>
-        <td><i class="fas fa-qrcode"></i></td>
+        <td><i (click)="openEditModal(editContent, title.innerHTML)" class="fas fa-pencil-alt link"></i></td>
+        <td><i (click)="openDeleteModal(deleteContent, title.innerHTML)" class="fas fa-trash-alt link"></i></td>
+        <td><i (click)="openQrModal(qrContent, title.innerHTML)" class="fas fa-qrcode link"></i></td>
       </tr>
       </tbody>
     </table>
-    <button type="button" class="btn btn-success customButton">Eintrag hinzufügen</button>
+    <app-modal-create></app-modal-create>
   </div>
   <ng-template #notConnected>
     <div class="alert alert-danger" role="alert">
@@ -30,3 +30,64 @@
     </div>
   </ng-template>
 </div>
+
+<ng-template #editContent let-c="close">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-edit">Eintrag bearbeiten</h4>
+    <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group row">
+        <label for="inputTitle" class="col-sm-2 col-form-label">Titel:</label>
+        <div class="col-sm-10">
+          <input type="text" [(ngModel)]="title" name="title" class="form-control" id="inputTitle" placeholder="Titel">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="inputDescription" class="col-sm-2 col-form-label">Beschreibung:</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" [(ngModel)]="description" name="description" id="inputDescription" placeholder="Beschreibung">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="inputDeadline" class="col-sm-2 col-form-label">Frist:</label>
+        <div class="col-sm-10">
+          <ngb-datepicker id="inputDeadline" name="datepicker" [(ngModel)]="dateValue"></ngb-datepicker>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="c('Save click'); saveEditModal()">Speichern</button>
+  </div>
+</ng-template>
+<ng-template #deleteContent let-c="close">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-delete">Eintrag löschen</h4>
+    <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+   <p>Willst du <strong>{{selectedTitleToDelete}}</strong> wirklich löschen?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="c('Save click'); deleteEntry()">Ja</button>
+    <button type="button" class="btn btn-outline-dark" (click)="c('Save click') ">Nein</button>
+  </div>
+</ng-template>
+
+<ng-template #qrContent let-c="close">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-qr">QR Code generieren</h4>
+    <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <img src="{{uri}}">
+  </div>
+</ng-template>

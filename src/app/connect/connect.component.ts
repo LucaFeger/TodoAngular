@@ -18,6 +18,7 @@ export class ConnectComponent implements OnInit {
   validatePhoneID(phoneID: any) {
     // validate phoneID through rest
     this.restService.connected = true;
+    this.restService.phoneID = phoneID;
     this.cookieService.set('phoneID', phoneID);
   }
 

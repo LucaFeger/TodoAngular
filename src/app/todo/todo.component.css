@@ -10,3 +10,7 @@
   margin: 2%;
   width: 75%;
 }
+
+.link {
+  cursor: pointer;
+}
